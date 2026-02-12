@@ -18,11 +18,10 @@ jobs:
       - image: cimg/node:20.0
     steps:
       - run:
-          name: "Clone du dépôt backend"
-          command: git clone https://github.com/komazia/backend_labo1.git
-      - run:
-          name: "Clone du dépôt frontend"
-          command: git clone https://github.com/komazia/frontend_labo1.git      
+          name: "Cloneage des dépôts backend puis frontend"
+          command: |
+            git clone https://github.com/komazia/backend_labo1.git
+            git clone https://github.com/komazia/frontend_labo1.git      
       - run:
           name: "Installation de dépendences du frontend"
           command: |
@@ -48,7 +47,7 @@ jobs:
           name: "Vérification des fichiers"
           command: |
             cd backend_labo1
-            ls -Rla
+            ls -Rl
 workflows:
   labo1-workflow: 
     jobs:
@@ -59,62 +58,3 @@ workflows:
       - deploiement:
           requires:
             - integrationFrontend
-
-
-
-
-
-
-
-
-
-# version: 2.1
-# orbs:
-#   node: circleci/node@7.2.1
-# jobs:
-#   checkoutEtTests:
-#     docker:
-#       - image: cimg/node:current
-#     steps:      
-#       - checkout
-#       - node/install-packages:
-#           pkg-manager: npm
-#       - run:
-#           name: "Exécution des tests"
-#           command: npm test
-#   integrationFrontend:
-#     docker:
-#       - image: cimg/node:current
-#     steps:
-#       - run:
-#           name: "Clone du dépôt backend"
-#           command: git clone https://github.com/komazia/backend_labo1.git
-#       - run:
-#           name: "Clone du dépôt frontend"
-#           command: git clone https://github.com/komazia/frontend_labo1.git
-#       - checkout
-#       - node/install-packages:
-#           pkg-manager: npm
-#       - run:
-#           name: "Run integration tests for frontend"
-#           command: npm run test:integration-frontend
-#   deploiement:
-#     docker:
-#       - image: cimg/node:current
-#     steps:
-#       - checkout
-#       - node/install-packages:
-#           pkg-manager: npm
-#       - run:
-#           name: "Deploy application"
-#           command: npm run deploy
-# workflows:
-#   labo1-workflow: 
-#     jobs:
-#       - checkoutEtTests
-#       - integrationFrontend:
-#           requires:
-#             - checkoutEtTests
-#       - deploiement:
-#           requires:
-#             - integrationFrontend
